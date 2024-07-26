@@ -1,0 +1,50 @@
+# 공통 설정
+server:
+  port: 3000
+
+spring:
+  # 데이터베이스 설정
+  datasource:
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@${db.host}:${db.port}:XE
+    username: ${db.username}
+    password: ${db.password}
+
+  # JPA 설정
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comment: true
+    hibernate:
+      ddlAuto: create # 배포 시 none
+
+  # 라이브 리로드 설정
+  devtools:
+    livereload:
+      enabled: true # 배포 시 false
+
+  # 정적 자원 설정(CSS, JS, 이미지) - static 경로 설정 - 코드 변경 시 바로 반영
+  web:
+    resources:
+      staticLocations: file:src/main/resources/static/ # 배포 시 없어도 됨
+
+  # 파일 업로드 용량 설정
+  servlet:
+    multipart:
+      maxFileSize: 20MB
+      maxRequestSize: 60MB
+      fileSizeThreshold: 30MB
+
+# 파일 업로드 경로 설정
+file:
+  upload:
+    path: D:/uploads
+    url: /upload/
+
+# 로거 설정
+logging:
+  level:
+    org.hibernate.type: trace
+    org.hibernate.orm.jdbc.bind: trace
