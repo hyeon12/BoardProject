@@ -2,6 +2,7 @@ package org.hyeon.member.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hyeon.member.services.MemberSaveService;
 import org.hyeon.member.validators.JoinValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -18,6 +19,7 @@ public class MemberController {
     // front : PC / mobile : 모바일(*) / admin : 관리자
 
     private final JoinValidator joinValidator;
+    private final MemberSaveService memberSaveService;
 
     @GetMapping("/join")
     public String join(@ModelAttribute RequestJoin form){
@@ -32,6 +34,8 @@ public class MemberController {
         if(errors.hasErrors()){
             return "front/member/join";
         }
+
+        memberSaveService.save(form); // 회원 가입 처리
 
         return "redirect:/member/login";
     }

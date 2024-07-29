@@ -14,7 +14,7 @@ public interface PasswordValidator {
             return password.matches(".*[a-zA-Z]+.*");
         }
 
-        return password.matches(".*[a-z]+.*]") && password.matches(".*[A-Z]+.*");
+        return password.matches(".*[a-z]+.*") && password.matches(".*[A-Z]+.*");
     };
 
     /***
