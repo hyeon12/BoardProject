@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/member")
 public class MemberController {
-    // front : PC / mobile : 모바일 / admin : 관리자
+    // 템플릿 3개 구조로 구성
+    // front : PC / mobile : 모바일(*) / admin : 관리자
 
     @GetMapping("/join")
     public String join(){
