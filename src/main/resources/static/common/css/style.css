@@ -1,0 +1,4 @@
+/* 관리자, pc, mobile 모든 템플릿에 공통적으로 정의될 css */
+.dn{
+    display: none !important; /* 강제 적용 */
+}
