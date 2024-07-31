@@ -1,4 +1,4 @@
-package org.hyeon.global.config;
+package org.hyeon.global.configs;
 
 import org.hyeon.member.services.LoginFailureHandler;
 import org.hyeon.member.services.LoginSuccessHandler;
@@ -31,6 +31,14 @@ public class SecurityConfig {
             //처리할 작업이 없고, 주소 이동만 하는 경우 handler 대신 url 로 입력해주면 된다~!
         });
         /* 로그인, 로그아웃 E */
+
+        /* 인가(접근 통제) 설정 S */
+        http.authorizeHttpRequests(c -> {
+           c.requestMatchers("/mypage/**").authenticated() //회원 전용 페이지 구성(일부)
+                   .requestMatchers("/admin/**").hasAnyAuthority("ADMIN") //관리자 전용
+                   .anyRequest().permitAll(); // 모든 페이지 공개
+        });
+        /* 인가(접근 통제) 설정 E */
 
         return http.build(); // 시큐리티 설정 무력화
     }

@@ -1,4 +1,4 @@
-package org.hyeon.global.config;
+package org.hyeon.global.configs;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

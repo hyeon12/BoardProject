@@ -45,7 +45,7 @@ public class MemberController {
 
     @PostMapping("/join")
     public String joinPs(@Valid RequestJoin form, Errors errors){
-
+//        memberSaveService.save(form);
         joinValidator.validate(form, errors); //에러 처리에 대한 서비스 추가~
 
         if(errors.hasErrors()){
@@ -109,17 +109,17 @@ public class MemberController {
     @ResponseBody
     @GetMapping("/test5")
     public void test5(){
-        /*
-        Board board = Board.builder()
+
+/*        Board board = Board.builder()
                 .bId("freetalk")
                 .bName("자유게시판")
                 .build();
 
-        boardRepository.saveAndFlush(board);
-        */
+        boardRepository.saveAndFlush(board);*/
         Board board = boardRepository.findById("freetalk").orElse(null);
         board.setBName("(재수정)자유게시판");
         boardRepository.saveAndFlush(board);
+
 
     }
 }

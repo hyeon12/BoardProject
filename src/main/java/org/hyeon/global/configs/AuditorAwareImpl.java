@@ -1,4 +1,4 @@
-package org.hyeon.global.config;
+package org.hyeon.global.configs;
 
 import lombok.RequiredArgsConstructor;
 import org.hyeon.member.MemberUtil;

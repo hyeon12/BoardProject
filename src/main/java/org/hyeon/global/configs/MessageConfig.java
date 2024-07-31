@@ -1,4 +1,4 @@
-package org.hyeon.global.config;
+package org.hyeon.global.configs;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
