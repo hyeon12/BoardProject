@@ -3,6 +3,8 @@ package org.hyeon.member.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hyeon.board.entities.Board;
+import org.hyeon.board.repositories.BoardRepository;
 import org.hyeon.member.MemberInfo;
 import org.hyeon.member.MemberUtil;
 import org.hyeon.member.services.MemberSaveService;
@@ -29,6 +31,7 @@ public class MemberController {
     private final JoinValidator joinValidator;
     private final MemberSaveService memberSaveService;
     private final MemberUtil memberUtil;
+    private final BoardRepository boardRepository;
 
     @ModelAttribute //해당 값이 세션 범위 내에서 유지 된다!
     public RequestLogin requestLogin(){
@@ -98,8 +101,25 @@ public class MemberController {
 
     @ResponseBody
     @GetMapping("/test4")
-    void test4(){
+    public void test4(){
         log.info("로그인 상태: {}", memberUtil.isLogin());
         log.info("로그인 상태: {}", memberUtil.getMember());
+    }
+
+    @ResponseBody
+    @GetMapping("/test5")
+    public void test5(){
+        /*
+        Board board = Board.builder()
+                .bId("freetalk")
+                .bName("자유게시판")
+                .build();
+
+        boardRepository.saveAndFlush(board);
+        */
+        Board board = boardRepository.findById("freetalk").orElse(null);
+        board.setBName("(재수정)자유게시판");
+        boardRepository.saveAndFlush(board);
+
     }
 }

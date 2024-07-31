@@ -13,6 +13,7 @@ import java.util.List;
 public class Member extends BaseEntity {
     @Id @GeneratedValue
     private Long seq; //회원 번호 - 기본키
+
     @Column(length = 65, unique = true, nullable = false)
     private String email;
 
