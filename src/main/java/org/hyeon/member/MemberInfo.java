@@ -1,11 +1,15 @@
 package org.hyeon.member;
 
+import lombok.Builder;
+import lombok.Data;
 import org.hyeon.member.entities.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@Data
+@Builder
 public class MemberInfo implements UserDetails {
 
     private String email;
@@ -25,7 +29,7 @@ public class MemberInfo implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return email;
     }
 
     @Override
@@ -40,11 +44,11 @@ public class MemberInfo implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 }

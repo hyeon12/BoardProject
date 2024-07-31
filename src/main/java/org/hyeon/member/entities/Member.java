@@ -26,6 +26,6 @@ public class Member extends BaseEntity {
     private String mobile;
 
     @ToString.Exclude
-    @OneToMany(mappedBy="member")
+    @OneToMany(mappedBy = "member")
     private List<Authorities> authorities;
 }
