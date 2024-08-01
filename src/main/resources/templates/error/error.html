@@ -1,1 +1,9 @@
-<!-- exceptionHandler 통해 발생될 에러(?) 공통 적용 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraqnet.net.nz/thymeleaf/layout"
+      layout:decorate="~{front/layouts/main}">
+<main layout:fragment="content">
+    <!-- 공통 에러 페이지의 내용(error/_common::common)을 레이아웃의 content 부분에 삽입 -->
+    <th:block th:replace="~{error/_common::common}"></th:block>
+</main>
+</html>

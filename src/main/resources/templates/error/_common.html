@@ -1,1 +1,13 @@
 <!-- 에러 페이지에 공통적으로 포함 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- 에러 관련 공통된 내용이 이 프래그먼트에 포함 -->
+<th:block th:fragment="common">
+    <h1>
+        <th:block th:text="${status}"></th:block>
+        <th:block th:if="${method != null}" th:text="${method}"></th:block>
+        <th:block th:text="${path}"></th:block>
+    </h1>
+    <h2 th:text="${message}"></h2>
+</th:block>
+</html>
