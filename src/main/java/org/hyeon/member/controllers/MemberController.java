@@ -10,6 +10,7 @@ import org.hyeon.member.MemberInfo;
 import org.hyeon.member.MemberUtil;
 import org.hyeon.member.services.MemberSaveService;
 import org.hyeon.member.validators.JoinValidator;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -72,6 +73,22 @@ public class MemberController implements ExceptionProcessor {
         return "front/member/login";
     }
 
+    @ResponseBody
+    @GetMapping("/test7")
+    @PreAuthorize("isAuthenticated()") //회원만 접근 가능한 주소
+    public void test7(){
+        log.info("test7 - 회원만 접근 가능");
+
+    }
+
+    @ResponseBody
+    @GetMapping("/test8")
+    @PreAuthorize("hasAnyAuthority('ADMIN')") //관리자만 접근 가능한 주소
+    public void test8(){
+        log.info("test8 - 관리자만 접근 가능");
+
+    }
+
     @ResponseBody //반환값 없는 경우에는 responseBody
     @GetMapping("/test")
     public void test(Principal principal){
@@ -121,7 +138,7 @@ public class MemberController implements ExceptionProcessor {
         Board board = boardRepository.findById("freetalk").orElse(null);
         board.setBName("(재수정)자유게시판");
         boardRepository.saveAndFlush(board);
-
-
     }
+
+
 }

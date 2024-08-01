@@ -9,10 +9,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.nio.file.AccessDeniedException;
+
 public interface ExceptionProcessor {
     @ExceptionHandler(Exception.class)
     default ModelAndView errorHandler(Exception e, HttpServletRequest request) {
-
         ModelAndView mv = new ModelAndView();
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR; // 기본 응답 코드 500
         String tpl = "error/error";
@@ -38,6 +39,8 @@ public interface ExceptionProcessor {
                     script += String.format("%s.location.replace('%s');", alertRedirectException.getTarget(), url);
                 }
             }
+        } else if (e instanceof AccessDeniedException){
+                status = HttpStatus.UNAUTHORIZED;
         }
 
         String url = request.getRequestURI();

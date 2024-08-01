@@ -3,6 +3,8 @@
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf_token" th:content="${_csrf.token}">
+    <meta name="crsf_header" th:content="${_csrf.headerName}">
     <!--페이지마다 달라질 타이틀명 (사이트명-페이지명 ex_네이버_뉴스)-->
     <title>
         <th:block th:if="${pageTitle != null}"
