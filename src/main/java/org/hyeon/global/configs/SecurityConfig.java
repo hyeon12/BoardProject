@@ -2,6 +2,7 @@ package org.hyeon.global.configs;
 
 import org.hyeon.member.services.LoginFailureHandler;
 import org.hyeon.member.services.LoginSuccessHandler;
+import org.hyeon.member.services.MemberAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,6 +38,10 @@ public class SecurityConfig {
            c.requestMatchers("/mypage/**").authenticated() //회원 전용 페이지 구성(일부)
                    .requestMatchers("/admin/**").hasAnyAuthority("ADMIN") //관리자 전용
                    .anyRequest().permitAll(); // 모든 페이지 공개
+        });
+
+        http.exceptionHandling(c -> {
+            c.authenticationEntryPoint(new MemberAuthenticationEntryPoint());
         });
         /* 인가(접근 통제) 설정 E */
 
