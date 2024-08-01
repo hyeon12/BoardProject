@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hyeon.board.entities.Board;
 import org.hyeon.board.repositories.BoardRepository;
+import org.hyeon.global.exceptions.ExceptionProcessor;
 import org.hyeon.member.MemberInfo;
 import org.hyeon.member.MemberUtil;
 import org.hyeon.member.services.MemberSaveService;
@@ -24,7 +25,7 @@ import java.security.Principal;
 @RequestMapping("/member")
 @RequiredArgsConstructor
 @SessionAttributes("requestLogin")
-public class MemberController {
+public class MemberController implements ExceptionProcessor {
     // 템플릿 3개 구조로 구성
     // front : PC / mobile : 모바일(*) / admin : 관리자
 
@@ -40,6 +41,7 @@ public class MemberController {
 
     @GetMapping("/join")
     public String join(@ModelAttribute RequestJoin form){
+
         return "front/member/join";
     }
 

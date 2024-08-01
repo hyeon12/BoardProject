@@ -1,34 +1,57 @@
 package org.hyeon.global.exceptions;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.hyeon.global.exceptions.script.AlertBackException;
+import org.hyeon.global.exceptions.script.AlertException;
+import org.hyeon.global.exceptions.script.AlertRedirectException;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 public interface ExceptionProcessor {
-    // 일반 컨트롤러 쪽 처리
     @ExceptionHandler(Exception.class)
-    default ModelAndView errorHandler(Exception e, HttpServletRequest request){
+    default ModelAndView errorHandler(Exception e, HttpServletRequest request) {
 
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR; //기본응답코드 500
-        if (e instanceof CommonException commonException){
-            //commonException의 하위 객체이면 응답코드 가져오도록 설정
+        ModelAndView mv = new ModelAndView();
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR; // 기본 응답 코드 500
+        String tpl = "error/error";
+
+        if (e instanceof CommonException commonException) {
             status = commonException.getStatus();
+
+            if (e instanceof AlertException) {
+                tpl = "common/_execute_script";
+                String script = String.format("alert('%s');", e.getMessage());
+
+                if (e instanceof AlertBackException alertBackException) {
+                    script += String.format("%s.history.back();", alertBackException.getTarget());
+                }
+
+                if (e instanceof AlertRedirectException alertRedirectException) {
+                    String url = alertRedirectException.getUrl();
+                    // 외부 주소일 경우 contextPath 붙일 필요 없다!
+                    if(!url.startsWith("http")){ // 외부 URL 이 아닌 경우
+                        url = request.getContextPath() + url;
+                    }
+
+                    script += String.format("%s.location.replace('%s');", alertRedirectException.getTarget(), url);
+                }
+            }
         }
 
         String url = request.getRequestURI();
         String qs = request.getQueryString();
 
-        if(StringUtils.hasText(qs)) url += "?" + qs;
+        if (StringUtils.hasText(qs)) url += "?" + qs;
 
-        ModelAndView mv = new ModelAndView();
+
         mv.addObject("message", e.getMessage());
         mv.addObject("status", status.value());
         mv.addObject("method", request.getMethod());
         mv.addObject("path", url);
         mv.setStatus(status);
-        mv.setViewName("error/error");
+        mv.setViewName(tpl);
 
 
         return mv;
