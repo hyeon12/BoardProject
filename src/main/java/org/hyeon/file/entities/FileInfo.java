@@ -1,9 +1,6 @@
 package org.hyeon.file.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,4 +33,10 @@ public class FileInfo extends BaseMemberEntity {
     private String contentType;
 
     private boolean done; // 그룹 작업 완료 여부 (게시글 작성 중간에 나가면 파일 저장X)
+
+    @Transient
+    private String fileUrl;
+
+    @Transient
+    private String filePath;
 }
