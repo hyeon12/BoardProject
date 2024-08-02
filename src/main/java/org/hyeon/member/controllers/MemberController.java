@@ -6,10 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.hyeon.board.entities.Board;
 import org.hyeon.board.repositories.BoardRepository;
 import org.hyeon.global.exceptions.ExceptionProcessor;
+import org.hyeon.global.exceptions.script.AlertRedirectException;
 import org.hyeon.member.MemberInfo;
 import org.hyeon.member.MemberUtil;
 import org.hyeon.member.services.MemberSaveService;
 import org.hyeon.member.validators.JoinValidator;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -42,7 +44,11 @@ public class MemberController implements ExceptionProcessor {
 
     @GetMapping("/join")
     public String join(@ModelAttribute RequestJoin form){
-
+        boolean result = false;
+        if(!result) {
+            //throw new AlertException("test exception", HttpStatus.BAD_REQUEST);
+            throw new AlertRedirectException("테스트", "/mypage", HttpStatus.BAD_REQUEST);
+        }
         return "front/member/join";
     }
 
@@ -88,6 +94,7 @@ public class MemberController implements ExceptionProcessor {
         log.info("test8 - 관리자만 접근 가능");
 
     }
+
 
     @ResponseBody //반환값 없는 경우에는 responseBody
     @GetMapping("/test")

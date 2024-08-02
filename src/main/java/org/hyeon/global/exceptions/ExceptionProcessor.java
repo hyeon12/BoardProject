@@ -17,11 +17,10 @@ public interface ExceptionProcessor {
         ModelAndView mv = new ModelAndView();
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR; // 기본 응답 코드 500
         String tpl = "error/error";
-
         if (e instanceof CommonException commonException) {
             status = commonException.getStatus();
-
             if (e instanceof AlertException) {
+
                 tpl = "common/_execute_script";
                 String script = String.format("alert('%s');", e.getMessage());
 
@@ -31,6 +30,7 @@ public interface ExceptionProcessor {
 
                 if (e instanceof AlertRedirectException alertRedirectException) {
                     String url = alertRedirectException.getUrl();
+                    //여기까지 유입됨....
                     // 외부 주소일 경우 contextPath 붙일 필요 없다!
                     if(!url.startsWith("http")){ // 외부 URL 이 아닌 경우
                         url = request.getContextPath() + url;
@@ -38,6 +38,8 @@ public interface ExceptionProcessor {
 
                     script += String.format("%s.location.replace('%s');", alertRedirectException.getTarget(), url);
                 }
+
+                mv.addObject("script", script);
             }
         } else if (e instanceof AccessDeniedException){
                 status = HttpStatus.UNAUTHORIZED;
