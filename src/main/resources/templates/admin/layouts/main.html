@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <!--페이지마다 달라질 타이틀명 (사이트명-페이지명 ex_네이버_뉴스)-->
@@ -9,28 +9,29 @@
         th:text="${#strings.concat(pageTitle, ' - ')}"></th:block>
         사이트 제목
     </title>
+    <!--특정 페이지마다 달라지는 css를 if/each 사용해서 대입한다!-->
     <link rel="stylesheet" type="text/css" th:href="@{/common/css/style.css}"> <!--공통-->
     <link rel="stylesheet" type="text/css" th:href="@{/admin/css/style.css}"> <!--admin 공통-->
-
-    <!--특정 페이지마다 달라지는 css를 if/each 사용해서 대입한다!-->
     <link th:if="${addCss != null}" rel="stylesheet" type="text/css"
-           th:each="cssFile: ${addCss}" th:href="@{/admin/css/{file}.css(file=${cssFile})}">
+          th:each="cssFile: ${addCss}" th:href="@{/admin/css/{file}.css(file=${cssFile})}">
     <!--내용 치환 하여 페이지에 맞는 css가 들어올 수 있도록-->
     <th:block layout:fragment="addCss"></th:block>
 
-    <script th:src="@{/common/js/common.js}"></script><!--모든 뷰의 공통적인 js-->
-    <script th:src="@{/admin/js/common.js}"></script><!--admin 공통적인 js-->
+    <script th:src="@{/common/js/common.js}"></script>
+    <script th:src="@{/admin/js/common.js}"></script>
     <!-- 페이지마다 달라지는 js를 치환하는 형태로 넣어줌 -->
-    <script th:if="${addScript != null}" th:each="jsFile : ${addScript}"
-            th:src="@{/admin/js/{file}}.js(file=${jsFile}"></script>
+    <script th:if="${addCommonScript != null}" th:each="jsFile : ${addCommonScript}" th:src="@{/common/js/{file}.js(file=${jsFile})}"></script>
+    <th:block layout:fragment="addCommonScript"></th:block>
+
+    <script th:if="${addScript != null}" th:each="jsFile : ${addScript}" th:src="@{/admin/js/{file}.js(file=${jsFile})}"></script>
     <!-- 템플릿쪽에서 바로 치환 가능 addView~ -->
     <th:block layout:fragment="addScript"></th:block>
 </head>
 <body>
-    <!-- :: -> fragment / templates 가 기본 경로 -->
-    <header th:replace="~{admin/outlines/_header::common}"></header>
-    <main layout:fragment="content"></main>
-    <footer th:replace="~{admin/outlines/_footer::common}"></footer>
-    <iframe name="ifrmHidden" class="dn"></iframe> <!--dn-보이지 않도록 정의된 스타일-->
+<!-- :: -> fragment / templates 가 기본 경로 -->
+<header th:replace="~{admin/outlines/_header::common}"></header>
+<main layout:fragment="content"></main>
+<footer th:replace="~{admin/outlines/_footer::common}"></footer>
+<iframe name="ifrmHidden" class="dn"></iframe><!--dn-보이지 않도록 정의된 스타일-->
 </body>
 </html>

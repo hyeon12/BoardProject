@@ -1,38 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <meta name="csrf_token" th:content="${_csrf.token}">
-    <meta name="crsf_header" th:content="${_csrf.headerName}">
-    <!--페이지마다 달라질 타이틀명 (사이트명-페이지명 ex_네이버_뉴스)-->
+    <meta name="csrf_header" th:content="${_csrf.headerName}">
+    <meta name="rootUrl" th:content="@{/}" />
     <title>
         <th:block th:if="${pageTitle != null}"
         th:text="${#strings.concat(pageTitle, ' - ')}"></th:block>
         사이트 제목
     </title>
-    <link rel="stylesheet" type="text/css" th:href="@{/common/css/style.css}"> <!--공통-->
-    <link rel="stylesheet" type="text/css" th:href="@{/front/css/style.css}"> <!--front 공통-->
-
-    <!--특정 페이지마다 달라지는 css를 if/each 사용해서 대입한다!-->
+    <link rel="stylesheet" type="text/css" th:href="@{/common/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/front/css/style.css}">
     <link th:if="${addCss != null}" rel="stylesheet" type="text/css"
-           th:each="cssFile: ${addCss}" th:href="@{/front/css/{file}.css(file=${cssFile})}">
-    <!--내용 치환 하여 페이지에 맞는 css가 들어올 수 있도록-->
+          th:each="cssFile: ${addCss}" th:href="@{/front/css/{file}.css(file=${cssFile})}">
     <th:block layout:fragment="addCss"></th:block>
 
-    <script th:src="@{/common/js/common.js}"></script><!--모든 뷰의 공통적인 js-->
-    <script th:src="@{/front/js/common.js}"></script><!--front 공통적인 js-->
-    <!-- 페이지마다 달라지는 js를 치환하는 형태로 넣어줌 -->
-    <script th:if="${addScript != null}" th:each="jsFile : ${addScript}"
-            th:src="@{/front/js/{file}}.js(file=${jsFile}"></script>
-    <!-- 템플릿쪽에서 바로 치환 가능 addView~ -->
+    <script th:src="@{/common/js/common.js}"></script>
+    <script th:src="@{/front/js/common.js}"></script>
+
+    <script th:if="${addCommonScript != null}" th:each="jsFile : ${addCommonScript}" th:src="@{/common/js/{file}.js(file=${jsFile})}"></script>
+    <th:block layout:fragment="addCommonScript"></th:block>
+
+    <script th:if="${addScript != null}" th:each="jsFile : ${addScript}" th:src="@{/front/js/{file}.js(file=${jsFile})}"></script>
     <th:block layout:fragment="addScript"></th:block>
 </head>
 <body>
-    <!-- :: -> fragment / templates 가 기본 경로 -->
-    <header th:replace="~{front/outlines/_header::common}"></header>
-    <main layout:fragment="content"></main>
-    <footer th:replace="~{front/outlines/_footer::common}"></footer>
-    <iframe name="ifrmHidden" class="dn"></iframe> <!--dn-보이지 않도록 정의된 스타일-->
+<header th:replace="~{front/outlines/_header::common}"></header>
+<main layout:fragment="content"></main>
+<footer th:replace="~{front/outlines/_footer::common}"></footer>
+<iframe name="ifrmHidden" class="dn"></iframe>
 </body>
 </html>

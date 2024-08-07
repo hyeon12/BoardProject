@@ -1,6 +1,6 @@
 # 공통 설정
 server:
-  port: 3000
+  port: 3500
 
 spring:
   # 데이터베이스 설정
