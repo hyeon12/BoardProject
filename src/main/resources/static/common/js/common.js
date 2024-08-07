@@ -1,8 +1,10 @@
 const commonLib = {
     /*
-    ajax 요청 공통 기능
+    * ajax 요청 공통 기능
+    *
+    * @param responseType : 응답 데이터 타입(text - text로, 그 외는 json)
     */
-    ajaxLoad(url, method = "GET", data, headers) {
+    ajaxLoad(url, method = "GET", data, headers, responseType) {
         if (!url) {
             return; // url 없는 경우 보내지 X
         }
@@ -12,8 +14,10 @@ const commonLib = {
         const csrfHeader = document.querySelector("meta[name='csrf_header']")?.content?.trim();
         const rootUrl = document.querySelector("meta[name='rootUrl']")?.content?.trim() ?? '';
 
-        url = location.protocol + "://" + location.host + rootUrl + url ;
+        rootUrl = rootUrl === '/' ? '' : rootUrl;
 
+        url = location.protocol + "//" + location.host + rootUrl + url;
+        console.log(url);
         method = method.toUpperCase();
         if (method === 'GET') {
             data = null;
@@ -35,8 +39,11 @@ const commonLib = {
         if(data) options.body = data;
         if(headers) options.headers = headers;
 
+        return new Promise((resolve, reject) => {
         fetch(url, options)
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
+            .then(res => responseType === 'text' ? res.text() : res.json()) // res.json() - JSON / res.text() - 텍스트
+            .then(data => resolve(data))
+            .catch(err => reject(err));
+        });
     }
 };

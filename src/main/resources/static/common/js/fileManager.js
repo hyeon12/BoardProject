@@ -15,23 +15,34 @@ const fileManager = {
             }
 
             if (!gid || !gid.trim()) {
-                throw new Error("필수 항목(gid) 누락 입니다.");
+                throw new Error("필수 항목 누락 입니다(gid).");
             }
 
             const formData = new FormData();
             formData.append("gid", gid.trim());
 
             for (const file of files) {
-                formData.append("file", file); // 전송될 name 값 = "file"
+                formData.append("file", file);
             }
 
-            if (location && location.trim()) { // location 있고, 공백 아닐때!
-                formData.append("location", location.trim()); // name="location"
+            if (location && location.trim()) {
+                formData.append("location", location.trim());
             }
 
-            const { ajaxLoad } = commonLib; // 비구조 할당 = 해당 기능만 구조 분해!
+            const { ajaxLoad } = commonLib;
 
-            ajaxLoad('/file/upload', 'POST', formData);
+            ajaxLoad('/file/upload', 'POST', formData)
+                .then(res => {
+                    if (!res.success) {
+                        alert(res.message);
+                        return;
+                    }
+                    // 파일 업로드 후 처리는 다양, fileUploadCallback을 직접 상황에 맞게 정의 처리
+                    if (typeof parent.fileUploadCallback === 'function') {
+                        parent.fileUploadCallback(res.data);
+                    }
+                })
+                .catch(err => alert(err.message));
 
         } catch (e) {
             console.error(e);
