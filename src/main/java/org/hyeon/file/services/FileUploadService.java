@@ -73,7 +73,9 @@ public class FileUploadService {
                 fileInfoRepository.flush();
             }
         }
+
         uploadedFiles.forEach(fileInfoService::addFileInfo);
+
         return uploadedFiles;
     }
 }
